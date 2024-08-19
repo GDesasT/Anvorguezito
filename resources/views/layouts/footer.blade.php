@@ -1,3 +1,82 @@
-<div>
-    <!-- Order your soul. Reduce your wants. - Augustine -->
-</div>
+<!-- resources/views/layouts/footer.blade.php -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section about">
+            <h2>SÍGUENOS EN FACEBOOK</h2>
+            <div class="social-container">
+                <a href="https://www.facebook.com/people/Comedores-Industriales-De-La-Fuente/61558344330763/?checkpoint_src=any" target="_blank">
+                    <img src="{{ asset('img/feisluk.png') }}" alt="Facebook Logo" style="width: 70px; height: 70px;">
+                </a>
+            </div>
+        </div>
+        <div class="footer-section links">
+            <h2>Enlaces</h2>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Menú</a></li>
+                <li><a href="#">Login</a></li>
+            </ul>
+        </div>
+        <div class="footer-section contact">
+            <h2>Contáctanos</h2>
+            <p>
+                <strong>E-mail:</strong> 
+            </p>
+            <p>
+                <strong>Teléfono:</strong> 
+            </p>
+            <p>
+                <strong>Dirección:</strong>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<!-- CSS -->
+<style>
+    footer {
+        background: #333;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+    }
+    .footer-content {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    .footer-section {
+        flex: 1;
+        padding: 10px;
+        min-width: 200px;
+    }
+    .footer-section h2 {
+        margin-bottom: 10px;
+        font-size: 20px;
+        color: #ff9900;
+    }
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+    }
+    .footer-section ul li {
+        margin-bottom: 5px;
+    }
+    .footer-section ul li a {
+        color: #fff;
+        text-decoration: none;
+    }
+    .footer-section ul li a:hover {
+        text-decoration: underline;
+    }
+    .footer-bottom {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+    .social-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 50px; 
+    }
+</style>
