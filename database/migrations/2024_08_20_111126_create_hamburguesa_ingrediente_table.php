@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -9,12 +10,8 @@ class CreateHamburguesaIngredienteTable extends Migration
     {
         Schema::create('hamburguesa_ingrediente', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('hamburguesa_id');
-            $table->unsignedBigInteger('ingrediente_id');
-            $table->timestamps();
-
-            $table->foreign('hamburguesa_id')->references('id')->on('hamburguesas')->onDelete('cascade');
-            $table->foreign('ingrediente_id')->references('id')->on('ingredientes')->onDelete('cascade');
+            $table->foreignId('hamburguesa_id')->constrained('productos')->onDelete('cascade');
+            $table->foreignId('ingrediente_id')->constrained('ingredientes')->onDelete('cascade');
         });
     }
 
@@ -22,4 +19,4 @@ class CreateHamburguesaIngredienteTable extends Migration
     {
         Schema::dropIfExists('hamburguesa_ingrediente');
     }
-}
+};

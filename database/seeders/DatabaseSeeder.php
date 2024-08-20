@@ -2,11 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Hamburguesa;
-use App\Models\Bebida;
+use App\Models\Producto;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -14,47 +12,51 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-
-        Hamburguesa::create([
+        // Hamburguesas
+        Producto::create([
             'nombre' => 'Hamburguesa Clásica',
             'descripcion' => 'Pan, carne, lechuga, tomate, queso, y cebolla',
             'precio' => 50.00,
-            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain'
+            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain',
+            'categoria' => 'food'
         ]);
 
-        Hamburguesa::create([
+        Producto::create([
             'nombre' => 'Hamburguesa Doble',
             'descripcion' => 'Pan, doble carne, lechuga, tomate, doble queso, y cebolla',
             'precio' => 75.00,
-            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain'
+            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain',
+            'categoria' => 'food'
         ]);
 
-        Hamburguesa::create([
+        Producto::create([
             'nombre' => 'Hamburguesa BBQ',
             'descripcion' => 'Pan, carne, queso, cebolla caramelizada, salsa BBQ',
             'precio' => 65.00,
-            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain'
+            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain',
+            'categoria' => 'food'
         ]);
 
         // Bebidas
-        Bebida::create([
+        Producto::create([
             'nombre' => 'Refresco de Cola',
             'precio' => 20.00,
-            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain'
+            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain',
+            'categoria' => 'drinks'
         ]);
 
-        Bebida::create([
+        Producto::create([
             'nombre' => 'Jugo de Naranja',
             'precio' => 25.00,
-            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain'
+            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain',
+            'categoria' => 'drinks'
         ]);
 
-        Bebida::create([
+        Producto::create([
             'nombre' => 'Agua Mineral',
             'precio' => 15.00,
-            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain'
+            'imagen_url' => 'https://th.bing.com/th/id/OIP.ly6yIuHghDlU_DDET9VTgQAAAA?rs=1&pid=ImgDetMain',
+            'categoria' => 'drinks'
         ]);
     }
 }

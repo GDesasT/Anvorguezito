@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -10,8 +11,12 @@ class HomeController extends Controller
     {
         return view('index');
     }
-    public function pointofsale()
+    public function pointOfSale()
     {
-        return view('pointofsale');
+        $productos = Producto::all(); // Obtiene todos los productos
+        return view('pointofsale', compact('productos')); // Pasa los productos a la vista
+    }
+    public function login(){
+        return view('login');
     }
 }

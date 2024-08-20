@@ -6,8 +6,11 @@ export default {
     "./resources/**/*.vue",
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        '342px': '342px',
+      },
+    },
   },
   plugins: [],
 }
-

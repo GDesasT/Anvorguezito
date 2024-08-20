@@ -2,19 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Ingrediente extends Model
 {
-    use HasFactory;
+    protected $fillable = ['nombre'];
 
-    protected $fillable = [
-        'nombre',
-    ];
-
-    public function hamburguesas()
+    public function productos()
     {
-        return $this->belongsToMany(Hamburguesa::class, 'hamburguesa_ingrediente');
+        return $this->belongsToMany(Producto::class, 'hamburguesa_ingrediente', 'ingrediente_id', 'hamburguesa_id');
     }
 }
+

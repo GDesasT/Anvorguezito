@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Venta extends Model
 {
-    use HasFactory;
+    protected $fillable = ['total'];
 
-    protected $fillable = [
-        'total',
-
-    ];
-
-    // Si más adelante decides agregar relaciones con otros modelos, como los productos vendidos, puedes agregarlas aquí.
+    public function productos()
+    {
+        return $this->belongsToMany(Producto::class, 'producto_venta', 'venta_id', 'producto_id')
+                    ->withPivot('cantidad', 'precio')
+                    ->withTimestamps();
+    }
 }
+

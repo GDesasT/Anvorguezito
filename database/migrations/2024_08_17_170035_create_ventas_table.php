@@ -19,4 +19,5 @@ class CreateVentasTable extends Migration
     {
         Schema::dropIfExists('ventas');
     }
-}
+};
+
