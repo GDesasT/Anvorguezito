@@ -8,7 +8,7 @@
     @vite('resources/css/app.css')
     <title>Ñeco el muñeco</title>
 </head>
-<body class="bg-gradient-to-b from-slate-100 to-slate-300 ">
+<body class="min-h-screen bg-gradient-to-b from-slate-100 to-slate-300 ">
     @include('layouts.nav')
 
     <div class="container mx-auto px-4 py-8">
