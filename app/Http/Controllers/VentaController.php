@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Venta;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class VentaController extends Controller
 {
@@ -18,35 +21,55 @@ class VentaController extends Controller
     // Método para almacenar una nueva venta en la base de datos
     public function store(Request $request)
     {
+
+        // Validación de los datos de entrada
         $request->validate([
             'productos' => 'required|array',
             'productos.*.id' => 'required|exists:productos,id',
             'productos.*.cantidad' => 'required|integer|min:1',
         ]);
 
-        // Crear la venta
-        $venta = new Venta();
-        $venta->total = 0; // Inicializa el total en 0
-        $venta->save();
+        // Iniciar una transacción para asegurarnos de que la venta y los productos se guarden correctamente
+        DB::beginTransaction();
 
-        // Añadir productos a la venta
-        foreach ($request->productos as $producto) {
-            $productoModel = Producto::find($producto['id']);
-            
-            if ($productoModel) {
-                $venta->productos()->attach($producto['id'], [
-                    'cantidad' => $producto['cantidad'],
-                    'precio' => $productoModel->precio,
-                ]);
+        try {
+            // Crear la venta
+            $venta = new Venta();
+            $venta->total = 0; // Inicializa el total en 0
+            $venta->save();
 
-                $venta->total += $productoModel->precio * $producto['cantidad'];
+            // Añadir productos a la venta
+            foreach ($request->productos as $producto) {
+                $productoModel = Producto::find($producto['id']);
+                
+                if ($productoModel) {
+                    $venta->productos()->attach($producto['id'], [
+                        'cantidad' => $producto['cantidad'],
+                        'precio' => $productoModel->precio,
+                    ]);
+
+                    // Sumar al total de la venta
+                    $venta->total += $productoModel->precio * $producto['cantidad'];
+                }
             }
+
+            // Actualiza el total después de añadir los productos
+            $venta->save();
+
+            // Confirmar la transacción
+            DB::commit();
+
+            return response()->json(['success' => true], 200);
+        } catch (Exception $e) {
+            // Revertir la transacción en caso de error
+            DB::rollBack();
+
+            // Registrar el error para el diagnóstico
+            Log::error('Error al crear la venta: ' . $e->getMessage());
+
+            // Devolver una respuesta de error
+            return response()->json(['success' => false, 'message' => 'An error occurred while finalizing the order.'], 500);
         }
-
-        // Actualiza el total después de añadir los productos
-        $venta->save();
-
-        return redirect()->route('point_of_sale')->with('success', 'Venta realizada con éxito'); // Redirige al formulario de ventas
     }
 
     // Método para mostrar todas las ventas
