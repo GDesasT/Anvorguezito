@@ -20,57 +20,44 @@ class VentaController extends Controller
 
     // Método para almacenar una nueva venta en la base de datos
     public function store(Request $request)
-    {
+{
+    $request->validate([
+        'productos' => 'required|array',
+        'productos.*.id' => 'required|exists:productos,id',
+        'productos.*.quantity' => 'required|integer|min:1', // Verifica que uses 'quantity' si es el nombre en el frontend
+    ]);
 
-        // Validación de los datos de entrada
-        $request->validate([
-            'productos' => 'required|array',
-            'productos.*.id' => 'required|exists:productos,id',
-            'productos.*.cantidad' => 'required|integer|min:1',
-        ]);
+    DB::beginTransaction();
 
-        // Iniciar una transacción para asegurarnos de que la venta y los productos se guarden correctamente
-        DB::beginTransaction();
+    try {
+        $venta = new Venta();
+        $venta->total = 0;
+        $venta->save();
 
-        try {
-            // Crear la venta
-            $venta = new Venta();
-            $venta->total = 0; // Inicializa el total en 0
-            $venta->save();
+        foreach ($request->productos as $producto) {
+            $productoModel = Producto::find($producto['id']);
 
-            // Añadir productos a la venta
-            foreach ($request->productos as $producto) {
-                $productoModel = Producto::find($producto['id']);
-                
-                if ($productoModel) {
-                    $venta->productos()->attach($producto['id'], [
-                        'cantidad' => $producto['cantidad'],
-                        'precio' => $productoModel->precio,
-                    ]);
-
-                    // Sumar al total de la venta
-                    $venta->total += $productoModel->precio * $producto['cantidad'];
-                }
+            if ($productoModel) {
+                $venta->productos()->attach($producto['id'], [
+                    'cantidad' => $producto['quantity'],
+                    'precio' => $productoModel->precio,
+                ]);
+                $venta->total += $productoModel->precio * $producto['quantity'];
             }
-
-            // Actualiza el total después de añadir los productos
-            $venta->save();
-
-            // Confirmar la transacción
-            DB::commit();
-
-            return response()->json(['success' => true], 200);
-        } catch (Exception $e) {
-            // Revertir la transacción en caso de error
-            DB::rollBack();
-
-            // Registrar el error para el diagnóstico
-            Log::error('Error al crear la venta: ' . $e->getMessage());
-
-            // Devolver una respuesta de error
-            return response()->json(['success' => false, 'message' => 'An error occurred while finalizing the order.'], 500);
         }
+
+        $venta->save();
+        DB::commit();
+
+        return response()->json(['success' => true], 200);
+    } catch (Exception $e) {
+        DB::rollBack();
+        Log::error('Error al crear la venta: ' . $e->getMessage());
+
+        return response()->json(['success' => false, 'message' => 'An error occurred while finalizing the order.'], 500);
     }
+}
+
 
     // Método para mostrar todas las ventas
     public function index()
@@ -92,4 +79,28 @@ class VentaController extends Controller
         $venta->delete();
         return redirect()->route('ventas.index')->with('success', 'Venta eliminada con éxito');
     }
+    public function salesHistory(Request $request)
+{
+    // Obtener las fechas de filtro si están presentes
+    $startDate = $request->input('start_date');
+    $endDate = $request->input('end_date');
+
+    // Crear la consulta base
+    $query = Venta::query();
+
+    // Aplicar el filtro de rango de fechas si se especifica
+    if ($startDate && $endDate) {
+        $query->whereBetween('created_at', [$startDate, $endDate]);
+    }
+
+    // Obtener las ventas filtradas
+    $ventas = $query->with('productos')->get();
+
+    // Calcular el total de ventas
+    $totalVentas = $ventas->sum('total');
+
+    return view('ventas.history', compact('ventas', 'totalVentas', 'startDate', 'endDate'));
+
+}
+
 }

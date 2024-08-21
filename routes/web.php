@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\CarouselImageController;
+use App\Http\Controllers\SalesHistoryController;
 
 // Ruta para la página de inicio
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -16,6 +17,9 @@ Route::get('/login', [HomeController::class, 'login'])->name('login');
 
 // Ruta para almacenar una venta
 Route::post('/ventas', [VentaController::class, 'store'])->name('ventas.store');
+
+//Ruta para Historial de Ventas
+Route::get('/history', [SalesHistoryController::class, 'index'])->name('ventas.history');
 
 // Ruta para el carrusel
 Route::get('/carousel', [CarouselImageController::class, 'index'])->name('carousel.index');

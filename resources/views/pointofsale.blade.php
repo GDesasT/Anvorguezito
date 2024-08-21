@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-5 bg-white">
+<div class="container px-5 mx-auto bg-white">
     <!-- Notificación de éxito -->
     @if(session('success'))
         <div id="notification" class="fixed z-50 p-4 text-white bg-green-500 rounded shadow-lg top-4 right-4 animate-slide-in">
@@ -9,22 +9,21 @@
         </div>
     @endif
 
-    <div class="flex lg:flex-row flex-col-reverse shadow-lg">
+    <div class="flex flex-col-reverse shadow-lg lg:flex-row">
         <!-- Sección Izquierda -->
-        <div class="w-full lg:w-3/5 min-h-screen shadow-lg">
+        <div class="w-full min-h-screen shadow-lg lg:w-3/5">
             <!-- Encabezado -->
-            <div class="flex flex-row justify-between items-center px-5 mt-5">
+            <div class="flex flex-row items-center justify-between px-5 mt-5">
                 <div class="text-gray-800">
-                    <div class="font-bold text-xl">Simons's BBQ Team</div>
-                    <span class="text-xs">Location ID#SIMON123</span>
+                    <div class="text-xl font-bold">Ñeco El Muñeco</div>
+                    <span class="text-xs">Torreon, Coahuila</span>
                 </div>
                 <div class="flex items-center">
-                    <div class="text-sm text-center mr-4">
-                        <div class="font-light text-gray-500">last synced</div>
-                        <span class="font-semibold">3 mins ago</span>
+                    <div class="mr-4 text-sm text-center">
+                        <div id="datetime" class="text-lg font-semibold text-gray-800"></div>
                     </div>
                     <div>
-                        <span class="px-4 py-2 bg-gray-200 text-gray-800 font-semibold rounded">
+                        <span class="px-4 py-2 font-semibold text-gray-800 bg-gray-200 rounded">
                             Help
                         </span>
                     </div>
@@ -33,36 +32,36 @@
             <!-- Fin del encabezado -->
 
             <!-- Categorías -->
-            <div class="mt-5 flex flex-row px-5">
-                <button onclick="filterItems('all', this)" class="category-button px-5 py-1 rounded-2xl text-sm font-semibold mr-4 hover:bg-yellow-500 active">
+            <div class="flex flex-row px-5 mt-5">
+                <button onclick="filterItems('all', this)" class="px-5 py-1 mr-4 text-sm font-semibold category-button rounded-2xl hover:bg-yellow-500 active">
                     All items
                 </button>
-                <button onclick="filterItems('food', this)" class="category-button px-5 py-1 rounded-2xl text-sm font-semibold mr-4 hover:bg-yellow-500">
+                <button onclick="filterItems('food', this)" class="px-5 py-1 mr-4 text-sm font-semibold category-button rounded-2xl hover:bg-yellow-500">
                     Food
                 </button>
-                <button onclick="filterItems('drinks', this)" class="category-button px-5 py-1 rounded-2xl text-sm font-semibold mr-4 hover:bg-yellow-500">
+                <button onclick="filterItems('drinks', this)" class="px-5 py-1 mr-4 text-sm font-semibold category-button rounded-2xl hover:bg-yellow-500">
                     Drinks
                 </button>
             </div>
             <!-- Fin de categorías -->
 
             <!-- Productos -->
-            <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-5 mt-5 overflow-y-auto h-3/4">
+            <div id="product-list" class="grid grid-cols-1 gap-6 px-5 mt-5 overflow-y-auto sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 h-3/4">
                 @foreach ($productos as $producto)
-                    <button onclick="addToOrder('{{ $producto->id }}', '{{ $producto->nombre }}', {{ $producto->precio }}, '{{ $producto->imagen_url }}')" class="h-342px product-item flex flex-col border border-gray-300 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 bg-white p-4 focus:outline-none transform hover:scale-105" data-category="{{ strtolower($producto->categoria) }}">
+                    <button onclick="addToOrder('{{ $producto->id }}', '{{ $producto->nombre }}', {{ $producto->precio }}, '{{ $producto->imagen_url }}')" class="flex flex-col p-4 transition-shadow duration-300 transform bg-white border border-gray-300 rounded-lg shadow-lg h-342px product-item hover:shadow-xl focus:outline-none hover:scale-105" data-category="{{ strtolower($producto->categoria) }}">
                         <!-- Imagen del producto -->
-                        <img src="{{ $producto->imagen_url }}" class="w-full h-40 object-cover rounded-md mb-4" alt="{{ $producto->nombre }}">
-                        
+                        <img src="{{ $producto->imagen_url }}" class="object-cover w-full h-40 mb-4 rounded-md" alt="{{ $producto->nombre }}">
+
                         <div class="flex-1">
                             <!-- Nombre del producto -->
-                            <div class="font-semibold text-gray-800 text-lg mb-2">{{ $producto->nombre }}</div>
+                            <div class="mb-2 text-lg font-semibold text-gray-800">{{ $producto->nombre }}</div>
                             <!-- Descripción o peso -->
-                            <span class="font-light text-sm text-gray-500">150g</span>
+                            <span class="text-sm font-light text-gray-500">150g</span>
                         </div>
-                        
+
                         <div class="flex items-center justify-between mt-4">
                             <!-- Precio del producto -->
-                            <span class="font-bold text-xl text-yellow-600">{{ number_format($producto->precio, 2) }} MXN</span>
+                            <span class="text-xl font-bold text-yellow-600">{{ number_format($producto->precio, 2) }} MXN</span>
                         </div>
                     </button>
                 @endforeach
@@ -72,19 +71,19 @@
         <!-- Fin de sección izquierda -->
 
         <!-- Sección Derecha -->
-        <div class="w-full lg:w-2/5 bg-gray-100 p-4 rounded-lg shadow-md">
+        <div class="w-full p-4 bg-gray-100 rounded-lg shadow-md lg:w-2/5">
             <!-- Encabezado -->
             <div class="flex flex-row items-center justify-between mb-4">
-                <div class="font-bold text-xl">Current Order</div>
+                <div class="text-xl font-bold">Venta Actual</div>
                 <div class="font-semibold">
-                    <button onclick="clearOrder()" class="px-4 py-2 rounded-md bg-red-100 text-red-500">Clear All</button>
-                    <button onclick="openSettings()" class="px-4 py-2 rounded-md bg-gray-100 text-gray-800">Settings</button>
+                    <button onclick="clearOrder()" class="px-4 py-2 text-red-500 bg-red-100 rounded-md">Limpiar Venta</button>
+
                 </div>
             </div>
             <!-- Fin del encabezado -->
 
             <!-- Lista de pedidos -->
-            <div id="order-list" class="px-2 py-4 overflow-y-auto h-64">
+            <div id="order-list" class="h-64 px-2 py-4 overflow-y-auto">
                 <!-- Los productos se agregarán aquí dinámicamente -->
             </div>
             <!-- Fin de lista de pedidos -->
@@ -93,9 +92,9 @@
             <div class="flex flex-col mt-4">
                 <div class="flex flex-row justify-between mb-2">
                     <span class="font-semibold">Total:</span>
-                    <span id="total-amount" class="font-bold text-lg">$0.00</span>
+                    <span id="total-amount" class="text-lg font-bold">$0.00</span>
                 </div>
-                <button onclick="finalizeOrder()" class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Finalize Order</button>
+                <button onclick="finalizeOrder()" class="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600">Finalizar Venta</button>
             </div>
         </div>
         <!-- Fin de sección derecha -->
@@ -151,17 +150,17 @@
         orderItems.forEach(item => {
             totalAmount += item.price * item.quantity;
             orderList.innerHTML += `
-                <div class="flex flex-row justify-between items-center mb-4">
+                <div class="flex flex-row items-center justify-between mb-4">
                     <div class="flex flex-row items-center w-2/5">
-                        <img src="${item.imageUrl}" class="w-10 h-10 object-cover rounded-md" alt="${item.name}">
-                        <span class="ml-4 font-semibold text-sm">${item.name}</span>
+                        <img src="${item.imageUrl}" class="object-cover w-10 h-10 rounded-md" alt="${item.name}">
+                        <span class="ml-4 text-sm font-semibold">${item.name}</span>
                     </div>
-                    <div class="w-32 flex justify-between items-center">
-                        <button onclick="updateQuantity('${item.id}', -1)" class="px-3 py-1 rounded-md bg-gray-300">-</button>
-                        <span class="font-semibold mx-4">${item.quantity}</span>
-                        <button onclick="updateQuantity('${item.id}', 1)" class="px-3 py-1 rounded-md bg-gray-300">+</button>
+                    <div class="flex items-center justify-between w-32">
+                        <button onclick="updateQuantity('${item.id}', -1)" class="px-3 py-1 bg-gray-300 rounded-md">-</button>
+                        <span class="mx-4 font-semibold">${item.quantity}</span>
+                        <button onclick="updateQuantity('${item.id}', 1)" class="px-3 py-1 bg-gray-300 rounded-md">+</button>
                     </div>
-                    <div class="font-semibold text-lg w-16 text-center">
+                    <div class="w-16 text-lg font-semibold text-center">
                         $${(item.price * item.quantity).toFixed(2)}
                     </div>
                 </div>
@@ -194,25 +193,62 @@
             const response = await fetch(ventasStoreUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', // Importante para enviar JSON
+                    'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify({ productos: orderItems })
             });
 
-            const result = await response.text(); // Cambiado a text() para capturar todo
+            const result = await response.json();
+            if (result.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Venta Exitosa',
+                    text: 'La Venta se ha Hecho Exitosamente!',
+                });
+                clearOrder();
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'La Venta no se Completo, Intentelo de Nuevo',
+                });
+            }
         } catch (error) {
             console.error('Error:', error);
-            alert('An error occurred while finalizing the order.');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'La Venta no se Completo, Intentelo de Nuevo',
+            });
         }
     } else {
-        alert('No items in the order.');
+        Swal.fire({
+            icon: 'warning',
+            title: 'Error',
+            text: 'No Hay Productos Seleccionados',
+        });
     }
 }
+
 
     function openSettings() {
         alert('Settings dialog.');
     }
+    function updateDateTime() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            const dateString = now.toLocaleDateString('es-ES', options);
+            const timeString = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+            document.getElementById('datetime').textContent = `${dateString} ${timeString}`;
+        }
+
+        // Actualiza la fecha y hora cada segundo
+        setInterval(updateDateTime, 1000);
+
+        // Muestra la fecha y hora inmediatamente al cargar la página
+        updateDateTime();
 </script>
 
 @endsection
